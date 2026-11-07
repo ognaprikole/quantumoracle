@@ -48,7 +48,6 @@ const initialCandles = [
 ]
 
 export default function Page() {
-  // --- СОСТОЯНИЯ ---
   const [angle, setAngle] = useState<number>(1.0);
   const [arrowTip, setArrowTip] = useState({ x: initialCandles.at(-1)?.x ?? 288, y: initialCandles.at(-1)?.close ?? 48 })
   const [candles, setCandles] = useState(initialCandles)
@@ -73,7 +72,7 @@ export default function Page() {
   const [assemblingBlock, setAssemblingBlock] = useState(false)
   const sliderRef = useRef<HTMLInputElement>(null);
 
-  // --- МУЛЬТИПЛЕЕР: ID И ИГРОКИ ---
+  //  МУЛЬТИПЛЕЕР: ID И ИГРОКИ
   const [playerId, setPlayerId] = useState<string>('');
   const [playerColor, setPlayerColor] = useState<string>('#00ff00');
   const [players, setPlayers] = useState<Record<string, PlayerData>>({});
@@ -100,10 +99,8 @@ export default function Page() {
       
       const playerRef = ref(db, `rooms/lobby_main/players/${id}`);
       
-      // Записываем начальные данные
       set(playerRef, { angle: 1.0, color: color });
       
-      // Говорим Firebase: "При разрыве связи удали эту запись"
       onDisconnect(playerRef).remove();
     }
   }, []);
@@ -128,7 +125,6 @@ export default function Page() {
   const trendPercent = btcPrice && priceDelta ? (priceDelta / btcPrice) * 100 : 0
   const chartOrigin = { x: 0, y: 150 }
 
-  // --- ЭФФЕКТЫ ---
   useEffect(() => {
     setNashPreview(calculateNashRate({ deltaR: Math.round(Math.abs(myAngle) * 1_000_000), deltaRNS: Math.round(Math.abs(priceDelta) * 1_000_000), epsilon: 1 }))
   }, [myAngle, priceDelta])
@@ -203,7 +199,7 @@ export default function Page() {
     setArrowTip({ x: lastCandle.x, y: Math.max(12, Math.min(138, firstCandle.close - myAngle * 60)) });
   }, [myAngle, firstCandle.close, lastCandle.x]); 
 
-  // --- ФУНКЦИИ ---
+  // ФУНКЦИИ 
   function updateArrowFromPointer(event: React.PointerEvent<HTMLDivElement>) {
     const svg = event.currentTarget.querySelector('svg[aria-label="Candlestick market chart"]')
     if (!svg) return
@@ -248,7 +244,7 @@ export default function Page() {
     }
   }
 
-  // --- РЕНДЕР ---
+  // РЕНДЕР
   return (
     <main className="min-h-screen bg-[#070909] px-4 py-4 text-[#f4f7f4] sm:px-6 relative">
       <div className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-md flex-col overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#0c1010] shadow-2xl shadow-black/50">
@@ -267,7 +263,6 @@ export default function Page() {
           </div>
         </header>
 
-        {/* CHART */}
         <section className="px-4 pt-6">
           <div className="mb-3 flex items-center justify-between">
             <div><p className="text-[10px] uppercase tracking-[0.2em] text-white/35">genesis block</p><h1 className="mt-1 text-lg font-semibold tracking-tight">Price momentum <span className="text-white/25">/ 1m</span></h1></div>
@@ -280,7 +275,6 @@ export default function Page() {
             <div className="pointer-events-none absolute inset-0 opacity-40" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px)', backgroundSize: '100% 44px, 37px 100%' }} />
             <div className="pointer-events-none absolute inset-y-9 left-0 z-10 flex flex-col justify-between py-0.5 font-mono text-[9px] text-white/35"><span>$40k</span><span>$30k</span><span>$20k</span><span>$10k</span><span>$0</span></div>
             
-            {/* Свечи */}
             <svg viewBox="0 0 340 150" className={`absolute inset-x-3 bottom-5 top-9 z-10 h-[calc(100%-56px)] w-[calc(100%-24px)] ${status === 'running' ? 'opacity-70' : ''}`} preserveAspectRatio="none" aria-label="Candlestick market chart">
               <g key={candleTick} className="candle-slide">
                 {candles.map((c) => <g key={c.x} className="opacity-80"><line x1={c.x} x2={c.x} y1={c.high} y2={c.low} stroke={c.up ? '#c8ff32' : '#ff5964'} strokeWidth="1" /><rect x={c.x - 4} y={Math.min(c.open, c.close)} width="8" height={Math.max(5, Math.abs(c.open - c.close))} rx="1" fill={c.up ? '#c8ff32' : '#ff5964'} /></g>)}
@@ -310,7 +304,6 @@ export default function Page() {
           </div>
         </section>
 
-        {/* CONTROLS */}
         <section className="px-4 pt-5">
           <div className="mb-3 flex items-center justify-between">
             <div className="flex items-center gap-2"><Gauge size={15} className="text-[#58d9ff]" /><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">risk angle</p></div>
@@ -333,7 +326,6 @@ export default function Page() {
           </div>
         </section>
 
-        {/* BETTING */}
         <section className="mt-auto px-4 pb-5 pt-5">
           {status !== 'idle' && <div className={`mb-3 flex items-center gap-3 rounded-xl border px-3 py-2.5 text-xs ${status === 'running' ? 'border-[#58d9ff]/20 bg-[#58d9ff]/5 text-[#58d9ff]' : status === 'win' ? 'border-[#c8ff32]/20 bg-[#c8ff32]/5 text-[#c8ff32]' : 'border-[#ff5964]/20 bg-[#ff5964]/5 text-[#ff5964]'}`}><Sparkles size={14} className={status === 'running' ? 'animate-spin' : ''} /><span>{status === 'running' ? 'Resolving...' : status === 'win' ? `Win +$${lastReward?.toFixed(2)}` : `Loss -$${Math.abs(lastReward ?? 0).toFixed(2)}`}</span></div>}
           
@@ -360,7 +352,6 @@ export default function Page() {
             {faucetMessage && <p className="mt-2 truncate text-center font-mono text-[9px] text-white/35">{faucetMessage}</p>}
           </section>
 
-          {/* BLOCKS */}
           <section className="mt-5 border-t border-white/[0.06] pt-5">
             <div className="mb-3 flex items-center justify-between">
               <div><p className="text-[10px] uppercase tracking-[0.2em] text-white/35">oracle chain</p><h2 className="mt-1 text-lg font-semibold tracking-tight">Previous blocks</h2></div>
