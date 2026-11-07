@@ -1,0 +1,11 @@
+pmOnFail: ignore
+
+minimumReleaseAgeExclude:
+  - '@next/*'
+  - next
+
+allowBuilds:
+  '@firebase/util': true
+  '@reown/appkit': true
+  protobufjs: true
+  secp256k1: true

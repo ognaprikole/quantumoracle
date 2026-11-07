@@ -1,0 +1,77 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+}
+
+:root {
+  color-scheme: dark;
+  --background: oklch(0.08 0.012 160);
+  --foreground: oklch(0.97 0.01 150);
+  --border: oklch(1 0 0 / 10%);
+  --ring: oklch(0.82 0.2 120);
+  --radius: 1rem;
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  html { background: #070909; }
+  body { @apply bg-background text-foreground; margin: 0; }
+}
+
+.candle-slide {
+  animation: candles-drift-left 520ms cubic-bezier(.22,.61,.36,1);
+  transform-origin: center;
+}
+
+@keyframes candles-drift-left {
+  from { transform: translateX(30px); opacity: .58; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.block-build {
+  animation: block-build-in 720ms cubic-bezier(.22,.61,.36,1);
+}
+
+@keyframes block-build-in {
+  from { transform: translateY(18px) scale(.96); opacity: 0; filter: brightness(1.8); }
+  55% { transform: translateY(-3px) scale(1.01); opacity: 1; filter: brightness(1.35); }
+  to { transform: translateY(0) scale(1); opacity: 1; filter: brightness(1); }
+}
+
+.risk-slider {
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff5964 0%, #303735 50%, #c8ff32 100%);
+  outline: none;
+}
+.risk-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 3px solid #0c1010;
+  background: #c8ff32;
+  box-shadow: 0 0 0 1px rgba(200,255,50,.65), 0 0 18px rgba(200,255,50,.35);
+  cursor: grab;
+}
+.risk-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 3px solid #0c1010;
+  background: #c8ff32;
+  box-shadow: 0 0 0 1px rgba(200,255,50,.65), 0 0 18px rgba(200,255,50,.35);
+  cursor: grab;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
