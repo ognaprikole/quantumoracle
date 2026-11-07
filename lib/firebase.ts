@@ -2,13 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+  apiKey: "AIzaSyDXQZKYN0Mi-y7UrUmP4ArMFvq-vTFocZw",
+  authDomain: "quantum-oracle-test.firebaseapp.com",
+  databaseURL: "https://quantum-oracle-test-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "quantum-oracle-test",
+  storageBucket: "quantum-oracle-test.firebasestorage.app",
+  messagingSenderId: "49899741876",
+  appId: "1:49899741876:web:26d353c3c562c3c762ede1"
 };
 
 const app = initializeApp(firebaseConfig);
